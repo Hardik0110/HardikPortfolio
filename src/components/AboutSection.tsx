@@ -94,7 +94,7 @@ const AboutSection = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.4, duration: 0.7 }}
           >
-            <img src="/hcoldplay.png" alt="Hardik Kubavat" className="w-full h-full object-cover" />
+            <img src="./src/assets/hcoldplay.png" alt="Hardik Kubavat" className="w-full h-full object-cover" />
           </motion.div>
         </div>
       </div>
