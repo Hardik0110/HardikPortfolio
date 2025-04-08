@@ -48,7 +48,7 @@ const Hero = () => {
         </motion.div>
       </div>
       
-      {/* Scroll indicator */}
+      {/* Scroll indicator with enhanced animation */}
       <motion.div 
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
         initial={{ opacity: 0 }}
