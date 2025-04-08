@@ -47,6 +47,26 @@ const Hero = () => {
           </h2>
         </motion.div>
       </div>
+      
+      {/* Scroll indicator */}
+      <motion.div 
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0.4, 1, 0.4] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        <div className="flex flex-col items-center">
+          <p className="text-white mb-2">Scroll Down</p>
+          <motion.div 
+            className="w-6 h-10 border-2 border-white rounded-full flex items-start justify-center p-1"
+            initial={{ y: 0 }}
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            <div className="w-1.5 h-3 bg-white rounded-full" />
+          </motion.div>
+        </div>
+      </motion.div>
     </div>
   );
 };
