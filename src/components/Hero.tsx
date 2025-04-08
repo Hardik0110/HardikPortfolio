@@ -11,12 +11,16 @@ const Hero = () => {
         ))}
       </div>
       
-      <div className="relative z-10 text-center px-4">
+      <div className="relative z-10 text-center px-4 transform rotate-[-5deg]">
         <motion.h1 
           className="text-6xl md:text-8xl font-bold text-white drop-shadow-[4px_4px_0px_rgba(0,0,0,0.7)] mb-4"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          animate={{ opacity: 1, y: 0, rotateZ: [0, -2, 2, 0] }}
+          transition={{ 
+            opacity: { duration: 0.6 },
+            y: { duration: 0.6 },
+            rotateZ: { duration: 1.5, repeat: Infinity, repeatType: "reverse", repeatDelay: 5 }
+          }}
         >
           HARDIK KUBAVAT
         </motion.h1>
@@ -28,7 +32,7 @@ const Hero = () => {
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-5xl font-bold text-black drop-shadow-[2px_2px_0px_rgba(0,0,0,0.2)]">
-            WEB DESIGNER &
+            SOFTWARE DEVELOPER
           </h2>
         </motion.div>
         
@@ -39,7 +43,7 @@ const Hero = () => {
           transition={{ delay: 0.4, duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-5xl font-bold text-white drop-shadow-[2px_2px_0px_rgba(0,0,0,0.2)]">
-            DEVELOPER
+            MACHINE LEARNING GEEK
           </h2>
         </motion.div>
       </div>
