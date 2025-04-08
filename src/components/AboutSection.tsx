@@ -57,7 +57,6 @@ const AboutSection = () => {
           </motion.p>
         </motion.div>
         
-        {/* Right side - image placeholder */}
         <motion.div 
           className="w-full md:w-2/5 aspect-square bg-[#ff8a80] border-8 border-white shadow-lg relative rounded-lg overflow-hidden"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -65,10 +64,7 @@ const AboutSection = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.7 }}
         >
-          {/* This is an empty placeholder for your image */}
-          <div className="absolute inset-0 flex items-center justify-center text-center p-4 text-white">
-            <p className="text-xl font-medium">Your Image Here</p>
-          </div>
+          <img src="/hcoldplay.png" alt="" />
         </motion.div>
       </div>
     </section>

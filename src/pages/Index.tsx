@@ -9,12 +9,10 @@ const Index = () => {
   const { scrollYProgress } = useScroll();
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Create more dramatic zoom effect based on scroll position
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.7]);
   const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0.6]);
   const blur = useTransform(scrollYProgress, [0, 0.3], [0, 4]);
   
-  // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
