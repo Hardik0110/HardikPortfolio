@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Hero from "../components/Hero";
 import AboutSection from "../components/AboutSection";
+import Projects from "../components/Projects";
 
 const Index = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -16,6 +17,15 @@ const Index = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Calculate positions based on scroll
+  const aboutPosition = scrollY < 100 
+    ? "100vh" 
+    : Math.min(100 * window.innerHeight - scrollY, 0);
+
+  const projectPosition = scrollY < window.innerHeight 
+    ? "100vw" 
+    : Math.min(200 * window.innerHeight - scrollY, 0);
+
   return (
     <div className="relative" ref={containerRef}>
       {/* Hero section stays fixed in background */}
@@ -24,17 +34,28 @@ const Index = () => {
       </div>
       
       {/* Spacer to allow scrolling */}
-      <div className="h-screen"></div>
+      <div className="h-[300vh]"></div>
       
       {/* About section slides up with scroll */}
       <motion.div
-        className="relative z-10"
+        className="fixed top-0 left-0 w-full h-screen z-10"
         style={{
-          y: scrollY < 100 ? "100vh" : Math.min(100 * window.innerHeight - scrollY, 0),
+          y: aboutPosition,
           transition: "none"
         }}
       >
         <AboutSection />
+      </motion.div>
+
+      {/* Projects section slides in from right */}
+      <motion.div
+        className="fixed top-0 left-0 w-full h-screen z-20"
+        style={{
+          x: projectPosition,
+          transition: "none"
+        }}
+      >
+        <Projects />
       </motion.div>
     </div>
   );
