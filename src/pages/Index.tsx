@@ -1,17 +1,11 @@
-
 import { useEffect, useState, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import Hero from "../components/Hero";
 import AboutSection from "../components/AboutSection";
 
 const Index = () => {
   const [scrollY, setScrollY] = useState(0);
-  const { scrollYProgress } = useScroll();
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.7]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0.6]);
-  const blur = useTransform(scrollYProgress, [0, 0.3], [0, 4]);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -24,27 +18,21 @@ const Index = () => {
 
   return (
     <div className="relative" ref={containerRef}>
-      <div className="min-h-screen flex flex-col overflow-hidden">
-        <motion.div 
-          style={{ 
-            scale,
-            opacity,
-            filter: blur.get() ? `blur(${blur.get()}px)` : "none",
-            transition: "all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1)"
-          }}
-          className="flex-1"
-        >
-          <Hero />
-        </motion.div>
+      {/* Hero section stays fixed in background */}
+      <div className="fixed top-0 left-0 w-full h-screen z-0">
+        <Hero />
       </div>
       
+      {/* Spacer to allow scrolling */}
+      <div className="h-screen"></div>
+      
+      {/* About section slides up with scroll */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ 
-          opacity: scrollY > 100 ? 1 : 0
-        }}
-        transition={{ duration: 1.2 }}
         className="relative z-10"
+        style={{
+          y: scrollY < 100 ? "100vh" : Math.min(100 * window.innerHeight - scrollY, 0),
+          transition: "none"
+        }}
       >
         <AboutSection />
       </motion.div>

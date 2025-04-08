@@ -20,9 +20,6 @@ export default {
     },
     extend: {
       colors: {
-        primary: "#FADC00", // Yellow background
-        secondary: "#C4F0E9", // Mint green banner
-        accent: "#FF9B9B", // Pink/salmon banner
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
