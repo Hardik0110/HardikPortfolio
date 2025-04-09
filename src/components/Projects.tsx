@@ -3,7 +3,7 @@
 import { AnimatedTestimonials } from "./ui/animated-testimonials";
 import { motion } from "framer-motion";
 
-const projectTestimonials = [
+const projects = [
   {
     quote: "An AI-powered code optimization tool that enhances code quality and performance",
     name: "AI Code Optimizer",
@@ -19,8 +19,14 @@ const projectTestimonials = [
   {
     quote: "Business Rule Express - A rule engine management system",
     name: "BRX",
-    designation: "Enterprise Software",
+    designation: "3D Model Website",
     src: "src/assets/BRX.png",
+  },
+  {
+    quote: "Business Rule Express - A rule engine management system",
+    name: "DNX",
+    designation: "Task Management System",
+    src: "src/assets/DNX.png",
   },
 ];
 
@@ -50,7 +56,7 @@ export default function Projects() {
 
           <div className="flex-1 w-full flex items-center justify-center">
             <AnimatedTestimonials 
-              testimonials={projectTestimonials}
+              testimonials={projects}
               autoplay={true}
               className="w-full max-w-[90vw] h-[80vh]"
             />
