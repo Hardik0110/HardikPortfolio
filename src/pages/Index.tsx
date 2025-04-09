@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Hero from "../components/Hero";
 import AboutSection from "../components/AboutSection";
 import Projects from "../components/Projects";
+import Skills from "../components/Skills";
 
 const Index = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -25,6 +26,8 @@ const Index = () => {
   const aboutEndPoint = screenHeight;
   const projectStartPoint = screenHeight * 1.2; // Add a 20% buffer after about section is fully visible
   const projectEndPoint = screenHeight * 2.2; // End the project animation after another screen height
+  const skillsStartPoint = screenHeight * 2.4; // Start skills animation after projects
+  const skillsEndPoint = screenHeight * 3.4; // End the skills animation after another screen height
 
   // Calculate positions based on scroll
   // About section animation
@@ -42,6 +45,16 @@ const Index = () => {
     Math.min(
       Math.max((1 - projectProgress) * window.innerWidth, 0),
       window.innerWidth
+    );
+    
+  // Skills section animation - coming from left side
+  const skillsProgress = (scrollY - skillsStartPoint) / (skillsEndPoint - skillsStartPoint);
+  // Keep skills off-screen until we reach the skills start point
+  const skillsPosition = scrollY < skillsStartPoint ? 
+    -window.innerWidth : // Keep it fully off-screen until buffer point is reached
+    Math.min(
+      Math.max((skillsProgress - 1) * -window.innerWidth, -window.innerWidth),
+      0
     );
 
   // Add global style to hide scrollbar
@@ -74,7 +87,7 @@ const Index = () => {
       </div>
       
       {/* Spacer to allow scrolling - add extra height for buffer zones */}
-      <div className="h-[350vh]"></div> {/* Increased to accommodate the buffer */}
+      <div className="h-[450vh]"></div> {/* Increased to accommodate all sections */}
       
       {/* About section slides up with scroll */}
       <motion.div
@@ -96,6 +109,17 @@ const Index = () => {
         }}
       >
         <Projects />
+      </motion.div>
+      
+      {/* Skills section slides in from left and overlaps projects */}
+      <motion.div
+        className="fixed top-0 left-0 w-full h-screen z-30"
+        style={{
+          x: skillsPosition,
+          transition: "none"
+        }}
+      >
+        <Skills />
       </motion.div>
     </div>
   );
