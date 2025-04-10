@@ -1,0 +1,83 @@
+[
+    {
+      "category": "Dashboard",
+      "title": "Task Management Dash",
+      "technologies": ["React", "Tailwind", "Shadcn"],
+      "github": "https://github.com/Hardik0110/Task-Management-Dashboard",
+      "description": "Modern task management dashboard for teams.",
+      "live": "https://task-dashboard-hardik.vercel.app/"
+    },
+    {
+      "category": "UI Kit",
+      "title": "AprycotLite",
+      "technologies": ["React", "Tailwind"],
+      "github": "https://github.com/Hardik0110/AprycotLite",
+      "description": "Minimal and reusable UI component library.",
+      "live": "https://aprycot-lite.vercel.app/"
+    },
+    {
+      "category": "Resume",
+      "title": "Resume Builder",
+      "technologies": ["React", "Tailwind"],
+      "github": "https://github.com/Hardik0110/ResumeBuilder",
+      "description": "Online resume builder with customizable templates.",
+      "live": "https://resumebuilder-hardik.vercel.app/"
+    },
+    {
+      "category": "Form Builder",
+      "title": "Form Builder",
+      "technologies": ["React", "Tailwind"],
+      "github": "https://github.com/Hardik0110/FormBuilder",
+      "description": "Dynamic drag-and-drop form builder tool.",
+      "live": "https://formbuilder-hardik.vercel.app/"
+    },
+    {
+      "category": "Crypto",
+      "title": "2TheMoon",
+      "technologies": ["Next.js", "Tailwind", "API"],
+      "github": "https://github.com/Hardik0110/2TheMoon",
+      "description": "Crypto dashboard with real-time coin tracking.",
+      "live": "https://2themoon.vercel.app/"
+    },
+    {
+      "category": "AI",
+      "title": "AI Code Optimizer",
+      "technologies": ["React", "AI", "LLM"],
+      "github": "https://github.com/Hardik0110/AI_CODE_Optimizer",
+      "description": "AI powered code optimization tool.",
+      "live": "https://ai-code-optimizer.vercel.app/"
+    },
+    {
+      "category": "Portfolio",
+      "title": "My Portfolio",
+      "technologies": ["Next.js", "Tailwind", "Framer Motion"],
+      "github": "https://github.com/Hardik0110/Portfolio",
+      "description": "Personal portfolio with interactive animations.",
+      "live": "https://hardikkubavat.vercel.app/"
+    },
+    {
+      "category": "Search",
+      "title": "Search App",
+      "technologies": ["React", "API"],
+      "github": "https://github.com/Hardik0110/SearchApp",
+      "description": "Search anything with advanced filters.",
+      "live": "https://searchapp-hardik.vercel.app/"
+    },
+    {
+      "category": "Form",
+      "title": "Survey Form",
+      "technologies": ["React", "Tailwind"],
+      "github": "https://github.com/Hardik0110/SurveyForm",
+      "description": "Customizable survey form builder.",
+      "live": "https://surveyform-hardik.vercel.app/"
+    },
+    {
+      "category": "AI",
+      "title": "Dwarf GPT",
+      "technologies": ["Next.js", "OpenAI API"],
+      "github": "https://github.com/Hardik0110/dwarfGPT",
+      "description": "Mini AI chat assistant powered by GPT.",
+      "live": "https://dwarfgpt.vercel.app/"
+    }
+  ]
+  

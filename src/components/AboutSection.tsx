@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { FaLinkedin, FaInstagram, FaGithub, FaTwitter } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import { IoMail, IoCall } from "react-icons/io5";
-import { PhoneCall } from "lucide-react";
 
 const AboutSection = () => {
   const iconPositions = [
@@ -25,6 +24,20 @@ const AboutSection = () => {
     { Icon: IoCall, href: "+918140900320" },
   ];
 
+  const bounceAnimation = {
+    initial: { y: 0 },
+    animate: {
+      y: [10, -10, 10],
+      transition: {
+        duration: 0.5,
+        repeat: Infinity,
+        repeatDelay: 1
+      }
+    }
+  };
+
+
+
   return (
     <section className="bg-[#ffffff] min-h-screen bg-primary relative overflow-hidden">
       <div className="absolute inset-0 grid grid-cols-[repeat(20,1fr)] grid-rows-[repeat(20,1fr)] opacity-60">
@@ -41,6 +54,7 @@ const AboutSection = () => {
               key={index}
               className="absolute"
               initial={{ opacity: 0, scale: 0 }}
+              variants={bounceAnimation}
               whileInView={{
                 opacity: 1,
                 scale: 1,
@@ -53,6 +67,7 @@ const AboutSection = () => {
                 duration: 0.6,
                 type: "spring",
                 stiffness: 100,
+
               }}
             >
               <a
