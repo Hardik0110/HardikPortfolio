@@ -1,139 +1,148 @@
-import { useEffect, useState, useRef, lazy, Suspense } from "react";
-import { motion } from "framer-motion";
-
-// Lazy load components
-const Hero = lazy(() => import("../components/Hero"));
-const AboutSection = lazy(() => import("../components/AboutSection"));
-const Projects = lazy(() => import("../components/Projects"));
-const Skills = lazy(() => import("../components/Skills"));
-
-// Loading fallback
-const LoadingFallback = () => <div className="w-full h-screen bg-background flex items-center justify-center">Loading...</div>;
+import { useEffect, useState, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Hero from "../components/Hero";
+import AboutSection from "../components/AboutSection";
+import Projects from "../components/Projects";
+import Skills from "../components/Skills";
 
 const Index = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [dimensions, setDimensions] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth
+  });
   const containerRef = useRef<HTMLDivElement>(null);
+  const requestRef = useRef<number>();
+  
+  // Use requestAnimationFrame for smoother scrolling with moderate damping
+  const animateScroll = useCallback(() => {
+    const currentScroll = window.scrollY;
+    // Medium damping for balanced scroll sensitivity
+    setScrollY(prev => prev + (currentScroll - prev) * 0.1);
+    requestRef.current = requestAnimationFrame(animateScroll);
+  }, []);
   
   useEffect(() => {
-    // Debounced scroll handler for performance
-    let ticking = false;
+    const initTimer = setTimeout(() => {
+      setIsInitialized(true);
+      requestRef.current = requestAnimationFrame(animateScroll);
+    }, 100);
     
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
-          ticking = false;
-        });
-        ticking = true;
-      }
+    const handleResize = () => {
+      setDimensions({
+        height: window.innerHeight,
+        width: window.innerWidth
+      });
     };
     
-    // Smooth scroll with CSS
-    document.documentElement.style.scrollBehavior = "smooth";
+    window.addEventListener("resize", handleResize);
     
-    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      document.documentElement.style.scrollBehavior = "";
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+      }
+      clearTimeout(initTimer);
+      window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [animateScroll]);
 
-  // Memoize screen height to avoid recalculating
-  const screenHeight = typeof window !== 'undefined' ? window.innerHeight : 0;
-  const screenWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
+  // Screen dimensions for calculations
+  const { height: screenHeight, width: screenWidth } = dimensions;
 
-  // Define transition points with slower animations
-  const aboutStartPoint = 0;
-  const aboutEndPoint = screenHeight * 1.5; // Extended for slower animation
-  const projectStartPoint = screenHeight * 1.8;
-  const projectEndPoint = screenHeight * 3.3;
-  const skillsStartPoint = screenHeight * 3.5;
-  const skillsEndPoint = screenHeight * 5.0;
-
-  // Calculate positions based on scroll with easing
-  const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+  // Moderate scroll distances for balanced transitions
+  const sectionHeight = screenHeight * 2; 
   
-  // About section animation with easing
-  const rawAboutProgress = Math.min(Math.max((scrollY - aboutStartPoint) / (aboutEndPoint - aboutStartPoint), 0), 1);
-  const aboutProgress = easeOutCubic(rawAboutProgress);
+  // Define transition points
+  const aboutStartPoint = 0;
+  const aboutEndPoint = sectionHeight;
+  const projectStartPoint = sectionHeight * 1.2;
+  const projectEndPoint = projectStartPoint + sectionHeight;
+  const skillsStartPoint = projectEndPoint + sectionHeight * 0.5;
+  const skillsEndPoint = skillsStartPoint + sectionHeight;
+
+  // Calculate positions based on scroll
+  // About section animation
+  const aboutProgress = Math.max(0, Math.min(1, (scrollY - aboutStartPoint) / (aboutEndPoint - aboutStartPoint)));
   const aboutPosition = (1 - aboutProgress) * screenHeight;
 
-  // Projects section animation with easing
-  const rawProjectProgress = Math.min(Math.max((scrollY - projectStartPoint) / (projectEndPoint - projectStartPoint), 0), 1);
-  const projectProgress = easeOutCubic(rawProjectProgress);
+  // Projects section animation
+  const projectProgress = Math.max(0, Math.min(1, (scrollY - projectStartPoint) / (projectEndPoint - projectStartPoint)));
   const projectPosition = scrollY < projectStartPoint ? 
     screenWidth : 
     (1 - projectProgress) * screenWidth;
     
-  // Skills section animation with improved easing and positioning
-  const rawSkillsProgress = Math.min(Math.max((scrollY - skillsStartPoint) / (skillsEndPoint - skillsStartPoint), 0), 1);
-  const skillsProgress = easeOutCubic(rawSkillsProgress);
-  
-  // This ensures the skills section stays fully off-screen until it's time to animate
-  // and then moves in a controlled manner to the center without overshooting
-  let skillsPosition;
-  
-  if (scrollY < skillsStartPoint) {
-    // Before animation starts - keep off-screen to the left
-    skillsPosition = -screenWidth;
-  } else if (skillsProgress >= 1) {
-    // When fully visible - keep at position 0 (center of screen)
-    skillsPosition = 0;
-  } else {
-    // During animation - move from left to center slowly
-    skillsPosition = -screenWidth * (1 - skillsProgress);
-  }
+  // Skills section animation - coming from left side
+  const skillsProgress = Math.max(0, Math.min(1, (scrollY - skillsStartPoint) / (skillsEndPoint - skillsStartPoint)));
+  const skillsPosition = scrollY < skillsStartPoint ? 
+    -screenWidth : // Keep off-screen until reach start point
+    skillsProgress * screenWidth - screenWidth; // From left side
+
+  // Add global style to hide scrollbar
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      body {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      body::-webkit-scrollbar {
+        display: none;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   return (
     <div className="relative" ref={containerRef}>
       {/* Hero section stays fixed in background */}
       <div className="fixed top-0 left-0 w-full h-screen z-0">
-        <Suspense fallback={<LoadingFallback />}>
-          <Hero />
-        </Suspense>
+        <Hero />
       </div>
       
-      {/* Spacer to allow scrolling - add extra height for slower animations */}
-      <div className="h-[600vh]"></div>
+      {/* Spacer for scrolling */}
+      <div style={{ height: `${skillsEndPoint + screenHeight}px` }}></div>
       
-      {/* About section slides up with scroll */}
-      <motion.div
-        className="fixed top-0 left-0 w-full h-screen z-10"
-        style={{
-          y: aboutPosition,
-          transition: "transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)"
-        }}
-      >
-        <Suspense fallback={<LoadingFallback />}>
-          <AboutSection />
-        </Suspense>
-      </motion.div>
+      {/* Use AnimatePresence to properly handle animation mounting */}
+      <AnimatePresence>
+        {isInitialized && (
+          <>
+            {/* About section */}
+            <motion.div
+              className="fixed top-0 left-0 w-full h-screen z-10"
+              initial={{ y: screenHeight }}
+              style={{ y: aboutPosition }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <AboutSection />
+            </motion.div>
 
-      {/* Projects section slides in from right */}
-      <motion.div
-        className="fixed top-0 left-0 w-full h-screen z-20"
-        style={{
-          x: projectPosition,
-          transition: "transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)"
-        }}
-      >
-        <Suspense fallback={<LoadingFallback />}>
-          <Projects />
-        </Suspense>
-      </motion.div>
-      
-      {/* Skills section slides in from left with improved animation */}
-      <motion.div
-        className="fixed top-0 left-0 w-full h-screen z-30"
-        style={{
-          x: skillsPosition,
-          transition: "transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)" // Slower, more controlled animation
-        }}
-      >
-        <Suspense fallback={<LoadingFallback />}>
-          <Skills />
-        </Suspense>
-      </motion.div>
+            {/* Projects section */}
+            <motion.div
+              className="fixed top-0 left-0 w-full h-screen z-20"
+              initial={{ x: screenWidth }}
+              style={{ x: projectPosition }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Projects />
+            </motion.div>
+            
+            {/* Skills section coming from left side */}
+            <motion.div
+              className="fixed top-0 left-0 w-full h-screen z-30"
+              initial={{ x: -screenWidth }}
+              style={{ x: skillsPosition }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Skills />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
