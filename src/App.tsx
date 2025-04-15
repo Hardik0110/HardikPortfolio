@@ -17,7 +17,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <LoadingScreen minDuration={5000}>
+      <LoadingScreen minDuration={2000}>
         <BrowserRouter>
           <Suspense fallback={null}>
             <Routes>

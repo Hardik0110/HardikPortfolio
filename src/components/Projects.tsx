@@ -46,13 +46,13 @@ const Projects = () => {
 
   // Map icons to categories for dynamic icon rendering
   const iconMap = {
-    "Dashboard": <CheckSquare className="text-blue-500" />,
+    "Dashboard": <CheckSquare className="text-blue-300" />,
     "UI Kit": <Palette className="text-purple-500" />,
     "Resume": <FileText className="text-green-500" />,
     "Form Builder": <FileCode className="text-yellow-500" />,
     "Crypto": <Coins className="text-amber-500" />,
     "AI": <Brain className="text-red-500" />,
-    "Portfolio": <User className="text-indigo-500" />,
+    "Portfolio": <User className="text-black" />,
     "Search": <Search className="text-cyan-500" />,
     "Form": <FileText className="text-teal-500" />
   };
@@ -90,7 +90,7 @@ const Projects = () => {
   };
 
   return (
-    <div className="min-h-screen h-screen flex flex-col relative overflow-hidden bg-[#FADC00]">
+    <div className="min-h-screen h-screen flex flex-col relative overflow-hidden bg-[#6DE1D2]">
       {/* Grid pattern background */}
       <div className="absolute inset-0 grid grid-cols-[repeat(20,1fr)] grid-rows-[repeat(20,1fr)] opacity-60">
         {Array.from({ length: 400 }).map((_, i) => (
@@ -121,7 +121,7 @@ const Projects = () => {
               <Carousel className="w-full relative">
                 <CarouselContent>
                   {projects.map((project, index) => (
-                    <CarouselItem key={index} className="basis-1/3 p-4">
+                    <CarouselItem key={index} className="basis-1/3 p-4 mb-12">
                       <ProjectCard 
                         title={project.title}
                         description={project.description}
@@ -133,9 +133,9 @@ const Projects = () => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                {/* Repositioned carousel buttons with high z-index */}
-                <CarouselPrevious className="absolute left-4 bottom-[-1] z-50 bg-red-700 hover:bg-gray-600 text-white border-none" />
-                <CarouselNext className="absolute right-4 bottom-[-1] z-50 bg-red-700 hover:bg-gray-600 text-white border-none" />
+                {/* Adjusted carousel buttons */}
+                <CarouselPrevious className="absolute left-4  bottom-4 z-50 bg-red-700 hover:bg-gray-600 text-white border-none" />
+                <CarouselNext className="absolute right-4  bottom-4 z-50 bg-red-700 hover:bg-gray-600 text-white border-none" />
               </Carousel>
             </div>
             <CouchScene />
@@ -143,6 +143,13 @@ const Projects = () => {
         </div>
         
         {/* Donuts with adjusted z-index */}
+        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 z-40">
+        <img 
+          src="/kickbuttowski.png" 
+          alt="Kickbuttowski" 
+          className="w-40 h-100" 
+        />
+      </div>
         <div className="absolute top-4 left-4 z-30">
           <DonutIcon />
         </div>
@@ -155,7 +162,16 @@ const Projects = () => {
         <div className="absolute bottom-4 right-4 z-30">
           <DonutIcon />
         </div>
+        <div className="absolute top-1/2 right-0 transform -translate-y-1/2 z-40">
+        <img 
+          src="/jerry.png" 
+          alt="Jerry" 
+          className="w-40 h-100" 
+        />
       </div>
+      </div>
+
+   
 
       {/* Project details dialog with higher z-index */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

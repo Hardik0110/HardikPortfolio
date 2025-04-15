@@ -82,7 +82,7 @@ const Skills = () => {
   ];
 
   return (
-    <section className="bg-white min-h-screen relative overflow-hidden">
+    <section className="bg-[#F75A5A] min-h-screen relative overflow-hidden">
       {imageSources.map((src, index) => (
         <MovingImage key={index} src={src} />
       ))}
