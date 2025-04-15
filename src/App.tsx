@@ -8,7 +8,7 @@ import LoadingScreen from "./components/LoadingScreen";
 
 const queryClient = new QueryClient();
 
-// Lazy load pages for better performance
+// Lazy load pages for performance
 const Index = lazy(() => import("./pages/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
