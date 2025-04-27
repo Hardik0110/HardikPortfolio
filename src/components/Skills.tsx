@@ -122,6 +122,8 @@ const Skills = () => {
             </div>
           </motion.div>
 
+          
+
           <div className="md:w-1/2">
             <motion.p
               className="text-xl mb-8 text-gray-800 leading-relaxed"
@@ -152,6 +154,28 @@ const Skills = () => {
               ))}
             </div>
           </div>
+          {/* Scroll indicator */}
+          {['left-50'].map((position) => (
+        <motion.div
+          key={position}
+          className={`absolute bottom-20 ${position} -translate-x-1/2 z-20`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0.4, 1, 0.4] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <div className="flex flex-col items-center">
+            <p className="text-white mb-2">Scroll Down</p>
+            <motion.div
+              className="w-6 h-10 border-2 border-white rounded-full flex items-start justify-center p-1"
+              initial={{ y: 0 }}
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <div className="w-1.5 h-3 bg-white rounded-full" />
+            </motion.div>
+          </div>
+        </motion.div>
+      ))}
         </div>
       </div>
     </section>

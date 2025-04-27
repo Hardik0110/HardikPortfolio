@@ -6,7 +6,7 @@ export default function AnimatedDownloadButton() {
   
   return (
     <a 
-      href="/resume.pdf" 
+      href="https://drive.google.com/file/d/11eZ--GdKn6PfNppK-XWvEMTZT8P5AqoL/view?usp=sharing" 
       download 
       className="absolute bottom-5 right-8 z-20"
     >

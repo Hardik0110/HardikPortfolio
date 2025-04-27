@@ -53,9 +53,18 @@ export const ContactSection = () => {
       </div>
       {/* Content */}
       <div className="relative h-full max-w-6xl mx-auto px-6 py-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-yellow-900 text-center mb-6 mt-4">
+        <h1 className=" mt-10 text-4xl md:text-5xl font-bold text-yellow-900 text-center mb-6 mt-4">
           Get In Touch!
         </h1>
+
+            {/* Quote */}
+        <div className="absolute -left-40 top-1/2 -translate-y-1/2 max-w-md mt-20 ">
+          <p className="text-4xl font-bold text-yellow-900 leading-relaxed italic transform -rotate-3 hover:rotate-0 transition-transform duration-300">
+            "If you've made it this far, either you really like my work — or you got lost. Either way, let's connect!"
+          </p>
+        </div>
+            
+
         <div className="relative h-[calc(100%-8rem)]">
           {/* Resume button - top right */}
           <div className="absolute top-0 right-0">
@@ -70,6 +79,15 @@ export const ContactSection = () => {
             <ContactForm />
           </div>
         </div>
+      </div>
+
+      {/* Johnny Bravo Image */}
+      <div className="absolute right-60 -top-4 transform translate-x-1/2 translate-y-1/2 z-10">
+        <img 
+          src="../src/assets/johnnybravo.png" 
+          alt="Johnny Bravo"
+          className="h-[600px] w-[600px]" 
+        />
       </div>
     </div>
   )
