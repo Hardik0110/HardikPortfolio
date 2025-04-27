@@ -74,7 +74,7 @@ const AboutSection = () => {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-4xl text-[#333] hover:text-[#ff8a80] transition-colors duration:300"
+                className="text-3xl text-[#333] hover:text-[#ff8a80] transition-colors duration:300"
               >
                 <social.Icon />
               </a>
@@ -96,7 +96,7 @@ const AboutSection = () => {
         </motion.div>
 
         {/* About Me Text Section */}
-        <div className="flex flex-col md:flex-row items-center justify-between mt-48 gap-8  transform rotate-3">
+        <div className="flex flex-col md:flex-row items-center justify-between mt-44  transform rotate-3">
           <motion.div
             className="w-full md:w-1/2 p-8 bg-white border-4 border-black shadow-xl rounded-3xl relative mb-16 md:mb-0"
             initial={{ opacity: 0, x: -30 }}
@@ -104,9 +104,9 @@ const AboutSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="absolute top-0 left-0 w-16 h-16 bg-[#ff8a80] rounded-full transform -translate-x-8 -translate-y-8"></div>
+            <div className="absolute top-0 left-0 w-12 h-12 bg-[#ff8a80] rounded-full transform -translate-x-8 -translate-y-8"></div>
             <motion.p
-              className="text-2xl font-bold mb-4 justify-center items-center flex underline italic"
+              className="text-xl font-bold mb-4 justify-center items-center flex underline italic"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -115,7 +115,7 @@ const AboutSection = () => {
               About Me
             </motion.p>
             <motion.p
-              className="text-lg mb-6"
+              className="text-md mb-6"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -124,7 +124,7 @@ const AboutSection = () => {
               My name is Hardik Kubavat, a FRONTEND ENGINEER based in Gujarat, India. I specialize in designing creative and effective web applications that boost the digital presence of my clients.
             </motion.p>
             <motion.p
-              className="text-lg mb-6"
+              className="text-md mb-6"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -133,7 +133,7 @@ const AboutSection = () => {
               I personally handle everything - from brand identity design and user experience (UX) to full web development - ensuring you get the design you need, at a price you'll love, and with quality you can trust.
             </motion.p>
             <motion.p
-              className="text-lg mb-6"
+              className="text-md mb-6"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -142,7 +142,7 @@ const AboutSection = () => {
               And I also have a passion for machine learning and AI, which I incorporate into my projects whenever possible.
             </motion.p>
             <motion.p
-              className="text-lg mb-6"
+              className="text-md mb-6"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}

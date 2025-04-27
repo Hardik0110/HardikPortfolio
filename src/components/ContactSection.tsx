@@ -82,7 +82,7 @@ export const ContactSection = () => {
       </div>
 
       {/* Johnny Bravo Image */}
-      <div className="absolute right-60 -top-4 transform translate-x-1/2 translate-y-1/2 z-10">
+      <div className="absolute right-60 bottom-72 transform translate-x-1/2 translate-y-1/2 ">
         <img 
           src="./johnnybravo.png" 
           alt="Johnny Bravo"

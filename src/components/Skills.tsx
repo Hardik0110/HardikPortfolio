@@ -66,9 +66,7 @@ const MovingImage = ({ src }) => {
 const Skills = () => {
   const skills = [
     { name: "TypeScript", color: "bg-blue-500" },
-    { name: "JavaScript", color: "bg-yellow-500" },
     { name: "React", color: "bg-cyan-500" },
-    { name: "HTML", color: "bg-orange-600" },
     { name: "CSS", color: "bg-blue-600" },
     { name: "Tailwind CSS", color: "bg-teal-500" },
     { name: "Machine Learning", color: "bg-pink-500" },
@@ -155,10 +153,10 @@ const Skills = () => {
             </div>
           </div>
           {/* Scroll indicator */}
-          {['left-50'].map((position) => (
+          {['-left-5'].map((position) => (
         <motion.div
           key={position}
-          className={`absolute bottom-20 ${position} -translate-x-1/2 z-20`}
+          className={`absolute bottom-40 ${position} -translate-x-1/2 z-20`}
           initial={{ opacity: 0 }}
           animate={{ opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 2, repeat: Infinity }}
