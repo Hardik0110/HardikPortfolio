@@ -166,7 +166,7 @@ const AboutSection = () => {
           transition={{ delay: 0.4, duration: 0.7 }}
         >
           <img
-            src="./src/assets/AboutSectionPhoto.png"
+            src="./AboutSectionPhoto.png"
             alt="Hardik Kubavat"
             className="w-full object-contain"
           />

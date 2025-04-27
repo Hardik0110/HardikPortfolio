@@ -84,7 +84,7 @@ export const ContactSection = () => {
       {/* Johnny Bravo Image */}
       <div className="absolute right-60 -top-4 transform translate-x-1/2 translate-y-1/2 z-10">
         <img 
-          src="../src/assets/johnnybravo.png" 
+          src="./johnnybravo.png" 
           alt="Johnny Bravo"
           className="h-[600px] w-[600px]" 
         />
