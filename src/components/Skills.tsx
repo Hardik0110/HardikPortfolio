@@ -10,7 +10,7 @@ const imageSources = [
   "/image5.svg",
 ];
 
-const MovingImage = ({ src }) => {
+const MovingImage = ({ src }: { src: string }) => {
   const controls = useAnimation();
   const isMounted = useRef(true);
 
@@ -105,7 +105,7 @@ const Skills = () => {
 
         <div className="flex flex-col md:flex-row gap-8 mt-12">
           <motion.div
-            className="md:w-1/2"
+            className="md:w-1/2 hidden md:block"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -120,11 +120,9 @@ const Skills = () => {
             </div>
           </motion.div>
 
-          
-
-          <div className="md:w-1/2">
+          <div className="w-full md:w-1/2">
             <motion.p
-              className="text-xl mb-8 text-gray-800 leading-relaxed"
+              className="text-xl mb-8 text-gray-800 leading-relaxed hidden md:block"
               style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -132,7 +130,7 @@ const Skills = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               These are my skills — crafted with caffeine, memes, and a little help from Large Language Models (because why struggle alone?).
-              I don’t just code... I vibe with the code.
+              I don't just code... I vibe with the code.
               Sometimes the code vibes back. Enter at your own risk — you might learn something... or get confused. Either way, it's a win.
             </motion.p>
 
@@ -152,7 +150,6 @@ const Skills = () => {
               ))}
             </div>
           </div>
-          {/* Scroll indicator */}
           {['-left-5'].map((position) => (
         <motion.div
           key={position}

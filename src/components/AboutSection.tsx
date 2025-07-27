@@ -14,6 +14,16 @@ const AboutSection = () => {
     { x: 550, y: 120, delay: 0.8 },
   ];
 
+  const mobileIconPositions = [
+    { x: 20, y: 10, delay: 0.2 },
+    { x: 80, y: 5, delay: 0.3 },
+    { x: 140, y: 15, delay: 0.4 },
+    { x: 200, y: 8, delay: 0.5 },
+    { x: 50, y: 40, delay: 0.6 },
+    { x: 110, y: 45, delay: 0.7 },
+    { x: 170, y: 50, delay: 0.8 },
+  ];
+
   const socialIcons = [
     { Icon: FaLinkedin, href: "https://www.linkedin.com/in/hardik0110/" },
     { Icon: FaInstagram, href: "https://www.instagram.com/hardikk0110" },
@@ -36,8 +46,6 @@ const AboutSection = () => {
     }
   };
 
-
-
   return (
     <section className="bg-[#ffffff] min-h-screen bg-primary relative overflow-hidden">
       <div className="absolute inset-0 grid grid-cols-[repeat(20,1fr)] grid-rows-[repeat(20,1fr)] opacity-60">
@@ -48,7 +56,7 @@ const AboutSection = () => {
 
       <div className="container mx-auto px-4 pt-32 pb-16 relative z-10">
         {/* Scattered Social Icons */}
-        <div className="absolute top-0 left-0 w-72 h-48">
+        <div className="absolute top-0 left-0 w-72 md:w-72 w-full h-48 md:h-48 h-20 z-20">
           {socialIcons.map((social, index) => (
             <motion.div
               key={index}
@@ -58,23 +66,22 @@ const AboutSection = () => {
               whileInView={{
                 opacity: 1,
                 scale: 1,
-                x: iconPositions[index].x,
-                y: iconPositions[index].y,
+                x: window.innerWidth < 768 ? mobileIconPositions[index].x : iconPositions[index].x,
+                y: window.innerWidth < 768 ? mobileIconPositions[index].y : iconPositions[index].y,
               }}
               viewport={{ once: true }}
               transition={{
-                delay: iconPositions[index].delay,
+                delay: window.innerWidth < 768 ? mobileIconPositions[index].delay : iconPositions[index].delay,
                 duration: 0.6,
                 type: "spring",
                 stiffness: 100,
-
               }}
             >
               <a
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-3xl text-[#333] hover:text-[#ff8a80] transition-colors duration:300"
+                className="text-3xl md:text-3xl text-2xl text-[#333] hover:text-[#ff8a80] transition-colors duration:300"
               >
                 <social.Icon />
               </a>
@@ -84,19 +91,19 @@ const AboutSection = () => {
 
         {/* EXPERIENCE heading in top right */}
         <motion.div
-          className="absolute top-20 right-8 md:right-20"
+          className="absolute top-20 md:top-20 top-16 right-8 md:right-20 z-10"
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <h2 className="text-6xl md:text-7xl font-bold text-white bg-[#333] px-4 py-2 border-4 border-white shadow-lg transform -rotate-3">
+          <h2 className="text-6xl md:text-7xl text-4xl font-bold text-white bg-[#333] px-4 py-2 border-4 border-white shadow-lg transform -rotate-3">
             EXPERIENCE
           </h2>
         </motion.div>
 
         {/* About Me Text Section */}
-        <div className="flex flex-col md:flex-row items-center justify-between mt-44  transform rotate-3">
+        <div className="flex flex-col md:flex-row items-center justify-between mt-34 md:mt-44 mt-20 transform rotate-3">
           <motion.div
             className="w-full md:w-1/2 p-8 bg-white border-4 border-black shadow-xl rounded-3xl relative mb-16 md:mb-0"
             initial={{ opacity: 0, x: -30 }}
@@ -155,8 +162,6 @@ const AboutSection = () => {
             </motion.p>
           </motion.div>
         </div>
-
-       
       </div>
       <motion.div
           className="absolute bottom-0 right-0 w-3/4   md:w-2/5"

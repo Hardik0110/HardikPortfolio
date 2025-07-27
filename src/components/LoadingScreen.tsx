@@ -1,4 +1,3 @@
-// LoadingScreen.tsx
 import React, { useEffect, useState, ReactNode } from "react";
 
 interface LoadingScreenProps {
@@ -40,6 +39,17 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ minDuration, child
           {/* Moving Emoji */}
           <div className="running-emoji absolute top-1/2 -translate-y-1/2">🏃</div>
         </div>
+        
+        {/* Desktop View Message - Only visible on mobile */}
+        <div className="mt-8 px-4 text-center md:hidden">
+          <p className="text-white text-lg font-semibold mb-2">
+            💻 For the best experience
+          </p>
+          <p className="text-yellow-400 text-base font-medium">
+            This website is <span className="underline font-bold">optimized for desktop view</span>
+          </p>
+        </div>
+
         {/* Decorative Elements */}
         <div className="absolute top-20 left-20 text-6xl animate-bounce delay-100">🌟</div>
         <div className="absolute bottom-20 right-20 text-6xl animate-bounce delay-300">✨</div>

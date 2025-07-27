@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 
-// Define a project type for better type safety
 interface Project {
   id?: number;
   title: string;
@@ -44,7 +43,6 @@ const Projects = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  // Map icons to categories for dynamic icon rendering
   const iconMap = {
     "Dashboard": <CheckSquare className="text-blue-300" />,
     "UI Kit": <Palette className="text-purple-500" />,
@@ -57,7 +55,6 @@ const Projects = () => {
     "Form": <FileText className="text-teal-500" />
   };
 
-  // Map background colors to categories
   const bgColorMap = {
     "Dashboard": "bg-blue-100",
     "UI Kit": "bg-purple-100",
@@ -70,20 +67,17 @@ const Projects = () => {
     "Form": "bg-teal-100"
   };
 
-  // Enhance project data with icons and background colors
   const projects = projectData.map(project => ({
     ...project,
     icon: iconMap[project.category],
     className: bgColorMap[project.category]
   }));
 
-  // Handle opening the dialog with project details
   const handleProjectClick = (project: Project) => {
     setSelectedProject(project);
     setIsDialogOpen(true);
   };
 
-  // Handle opening a link in a new tab
   const handleLinkClick = (url: string, e: React.MouseEvent) => {
     e.stopPropagation();
     window.open(url, '_blank', 'noopener,noreferrer');
@@ -91,19 +85,16 @@ const Projects = () => {
 
   return (
     <div className="min-h-screen h-screen flex flex-col relative overflow-hidden bg-[#6DE1D2]">
-      {/* Grid pattern background */}
       <div className="absolute inset-0 grid grid-cols-[repeat(20,1fr)] grid-rows-[repeat(20,1fr)] opacity-60">
         {Array.from({ length: 400 }).map((_, i) => (
           <div key={i} className="border-r border-b border-black/20"></div>
         ))}
       </div>
 
-      {/* Background clouds with adjusted z-index */}
       <div className="relative z-10">
         <CloudBackground />
       </div>
       
-      {/* Main content with adjusted z-index */}
       <div className="container mx-auto px-4 flex-1 flex flex-col justify-center items-center relative z-20">
         <motion.h1 
           className="text-4xl md:text-5xl font-bold text-white drop-shadow-[4px_4px_0px_rgba(0,0,0,0.7)] text-center mb-8"
@@ -114,14 +105,13 @@ const Projects = () => {
          Hardik's <span className="text-[#FF9B9B]">Code</span> Flex
         </motion.h1>
         
-        {/* TVFrame container must be relative */}
         <div className="w-[95vw] max-w-[1200px] relative">
           <TVFrame>
             <div className="relative">
               <Carousel className="w-full relative">
                 <CarouselContent>
                   {projects.map((project, index) => (
-                    <CarouselItem key={index} className="basis-1/3 p-4 mb-12">
+                    <CarouselItem key={index} className="md:basis-1/3 basis-full p-4 mb-12">
                       <ProjectCard 
                         title={project.title}
                         description={project.description}
@@ -133,7 +123,6 @@ const Projects = () => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                {/* Adjusted carousel buttons */}
                 <CarouselPrevious className="absolute left-4  bottom-4 z-50 bg-red-700 hover:bg-gray-600 text-white border-none" />
                 <CarouselNext className="absolute right-4  bottom-4 z-50 bg-red-700 hover:bg-gray-600 text-white border-none" />
               </Carousel>
@@ -142,8 +131,7 @@ const Projects = () => {
           </TVFrame>
         </div>
         
-        {/* Donuts with adjusted z-index */}
-        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 z-40">
+        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 z-40 hidden md:block">
         <img 
           src="/kickbuttowski.png" 
           alt="Kickbuttowski" 
@@ -162,7 +150,7 @@ const Projects = () => {
         <div className="absolute bottom-4 right-4 z-30">
           <DonutIcon />
         </div>
-        <div className="absolute top-1/2 right-0 transform -translate-y-1/2 z-40">
+        <div className="absolute top-1/2 right-0 transform -translate-y-1/2 z-40 hidden md:block">
         <img 
           src="/jerry.png" 
           alt="Jerry" 
@@ -171,9 +159,6 @@ const Projects = () => {
       </div>
       </div>
 
-   
-
-      {/* Project details dialog with higher z-index */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="bg-white border-4 border-[#8B6F47] max-w-md z-50">
           {selectedProject && (
@@ -231,7 +216,6 @@ const Projects = () => {
           )}
         </DialogContent>
       </Dialog>
-      {/* Scroll indicator */}
       {['left-20'].map((position) => (
         <motion.div
           key={position}

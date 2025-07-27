@@ -12,7 +12,7 @@ const Hero = () => {
         ))}
       </div>
 
-      <div className="relative z-10 text-center px-4 transform rotate-[-5deg] mb-64">
+      <div className="relative z-10 text-center px-4 transform rotate-[-5deg] mb-64 md:mb-64 mb-32">
         <motion.h1
           className="text-6xl md:text-8xl font-bold text-white drop-shadow-[4px_4px_0px_rgba(0,0,0,0.7)] mb-4"
           initial={{ opacity: 0, y: 20 }}
@@ -50,8 +50,8 @@ const Hero = () => {
       </div>
 
       {/* Globe component: half visible at the bottom */}
-      <div className="absolute bottom-0 w-full h-[300px] overflow-hidden z-10">
-        <Globe className="relative -top-[50px] opacity-80" />
+      <div className="absolute bottom-0 w-full h-[300px] md:h-[300px] h-[200px] overflow-hidden z-10">
+        <Globe className="relative -top-[50px] md:-top-[50px] -top-[25px] opacity-80" />
       </div>
 
       {/* Scroll indicator */}
@@ -78,7 +78,9 @@ const Hero = () => {
       ))}
 
       {/* Full circular download button at right bottom */}
+      <div className="hidden md:block">
         <AnimatedDownloadButton />
+      </div>
     </div>
   );
 };

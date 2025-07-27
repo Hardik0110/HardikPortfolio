@@ -2,6 +2,7 @@ import React from 'react'
 import { ContactForm } from './ContactForm'
 import { ContactInfo } from './ContactInfo'
 import { ResumeButton } from './ResumeButton'
+
 export const ContactSection = () => {
   return (
     <div className="h-screen w-full bg-[#FFA955] relative overflow-hidden">
@@ -58,7 +59,7 @@ export const ContactSection = () => {
         </h1>
 
             {/* Quote */}
-        <div className="absolute -left-40 top-1/2 -translate-y-1/2 max-w-md mt-20 ">
+        <div className="absolute -left-40 top-1/2 -translate-y-1/2 max-w-md mt-20 hidden md:block">
           <p className="text-4xl font-bold text-yellow-900 leading-relaxed italic transform -rotate-3 hover:rotate-0 transition-transform duration-300">
             "If you've made it this far, either you really like my work — or you got lost. Either way, let's connect!"
           </p>
@@ -67,11 +68,11 @@ export const ContactSection = () => {
 
         <div className="relative h-[calc(100%-8rem)]">
           {/* Resume button - top right */}
-          <div className="absolute top-0 right-0">
+          <div className="absolute top-0 right-0 md:block block">
             <ResumeButton />
           </div>
           {/* Contact info - top left */}
-          <div className="absolute top-0 left-0">
+          <div className="absolute top-0 left-0 hidden md:block">
             <ContactInfo />
           </div>
           {/* Main form */}
@@ -82,7 +83,7 @@ export const ContactSection = () => {
       </div>
 
       {/* Johnny Bravo Image */}
-      <div className="absolute right-60 bottom-72 transform translate-x-1/2 translate-y-1/2 ">
+      <div className="absolute right-60 bottom-72 transform translate-x-1/2 translate-y-1/2 hidden md:block">
         <img 
           src="./johnnybravo.png" 
           alt="Johnny Bravo"
