@@ -1,4 +1,3 @@
-// Index.tsx – Updated Contact section animation coming from top
 import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Hero from "../components/Hero";
@@ -17,10 +16,9 @@ const Index = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>();
   
-  // Improve smoothness with enhanced damping factor
   const animateScroll = useCallback(() => {
     const currentScroll = window.scrollY;
-    setScrollY(prev => prev + (currentScroll - prev) * 0.08);
+    setScrollY(prev => prev + (currentScroll - prev) * 0.1);
     requestRef.current = requestAnimationFrame(animateScroll);
   }, []);
   
@@ -78,11 +76,10 @@ const Index = () => {
     -screenWidth : 
     skillsProgress * screenWidth - screenWidth;
 
-  // Updated: Contact section coming from top
   const contactProgress = Math.max(0, Math.min(1, (scrollY - contactStartPoint) / (contactEndPoint - contactStartPoint)));
   const contactPosition = scrollY < contactStartPoint
     ? -screenHeight
-    : -screenHeight + contactProgress * screenHeight;
+    : Math.max(-screenHeight, -screenHeight + contactProgress * screenHeight);
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -92,12 +89,17 @@ const Index = () => {
           -ms-overflow-style: none;
           scrollbar-width: none;
           overflow-x: hidden;
+          -webkit-overflow-scrolling: touch;
+          overscroll-behavior: none;
         }
         body::-webkit-scrollbar {
           display: none;
         }
         html {
           scroll-behavior: smooth;
+        }
+        * {
+          -webkit-overflow-scrolling: touch;
         }
       `;
       document.head.appendChild(style);
@@ -147,15 +149,17 @@ const Index = () => {
             >
               <Skills />
             </motion.div>
-              
-            <motion.div
-              className="fixed top-0 left-0 w-full h-screen z-40"
-              initial={{ y: -screenHeight }}
-              style={{ y: contactPosition }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <ContactSection />
-            </motion.div>
+            
+            {scrollY >= contactStartPoint && (
+              <motion.div
+                className="fixed top-0 left-0 w-full h-screen z-40"
+                initial={{ y: -screenHeight }}
+                style={{ y: contactPosition }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <ContactSection />
+              </motion.div>
+            )}
           </>
         )}
       </AnimatePresence>

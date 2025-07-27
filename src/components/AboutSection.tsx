@@ -103,7 +103,7 @@ const AboutSection = () => {
         </motion.div>
 
         {/* About Me Text Section */}
-        <div className="flex flex-col md:flex-row items-center justify-between mt-34 md:mt-44 mt-20 transform rotate-3">
+        <div className="flex flex-col md:flex-row items-center justify-between mt-44 md:mt-44 mt-20 transform rotate-3">
           <motion.div
             className="w-full md:w-1/2 p-8 bg-white border-4 border-black shadow-xl rounded-3xl relative mb-16 md:mb-0"
             initial={{ opacity: 0, x: -30 }}
@@ -164,7 +164,7 @@ const AboutSection = () => {
         </div>
       </div>
       <motion.div
-          className="absolute bottom-0 right-0 w-3/4   md:w-2/5"
+          className="absolute bottom-0 right-0 w-3/4 md:w-2/5 hidden md:block"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
