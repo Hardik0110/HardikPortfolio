@@ -92,6 +92,14 @@ body {
   }
 }
 
+/* Promote animated section wrappers to their own GPU compositor layer.
+   This eliminates paint jank during scroll-driven transform transitions. */
+.section-panel {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
 .book-text {
     writing-mode: vertical-rl;
     text-orientation: mixed;

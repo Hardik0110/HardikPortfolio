@@ -1,12 +1,17 @@
-import { useRef, useState, useCallback, useEffect, ReactNode } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState, useCallback } from "react";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  useMotionValueEvent,
+} from "framer-motion";
 import Hero from "../components/Hero";
 import AboutSection from "../components/AboutSection";
 import Projects from "../components/Projects";
 import Skills from "../components/Skills";
 import { ContactSection } from "@/components/ContactSection";
 
-// ── Section metadata ────────────────────────────────────────────────────
 const SECTIONS = [
   { id: "hero",     label: "Home"    },
   { id: "about",    label: "About"   },
@@ -15,87 +20,7 @@ const SECTIONS = [
   { id: "contact",  label: "Contact" },
 ] as const;
 
-type SectionId = typeof SECTIONS[number]["id"];
-
-type SectionAnim = {
-  initial: object;
-  whileInView: object;
-  transition: object;
-} | null;
-
-// Each section slides in from a different direction for visual variety
-const ANIMATIONS: SectionAnim[] = [
-  null, // Hero — always first, no entrance needed
-  {
-    initial:    { opacity: 0, y: 90 },
-    whileInView:{ opacity: 1, y: 0  },
-    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
-  },
-  {
-    initial:    { opacity: 0, x: 120 },
-    whileInView:{ opacity: 1, x: 0   },
-    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
-  },
-  {
-    initial:    { opacity: 0, scale: 0.86, rotate: -3 },
-    whileInView:{ opacity: 1, scale: 1,    rotate: 0  },
-    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
-  },
-  {
-    initial:    { opacity: 0, y: -90 },
-    whileInView:{ opacity: 1, y: 0   },
-    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
-  },
-];
-
-// ── Section wrapper ─────────────────────────────────────────────────────
-function Section({
-  id,
-  index,
-  anim,
-  onVisible,
-  children,
-}: {
-  id: SectionId;
-  index: number;
-  anim: SectionAnim;
-  onVisible: (i: number) => void;
-  children: ReactNode;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { amount: 0.5 });
-
-  useEffect(() => {
-    if (isInView) onVisible(index);
-  }, [isInView, index, onVisible]);
-
-  const base = "h-screen overflow-hidden flex-shrink-0";
-
-  return (
-    <div
-      id={id}
-      ref={ref}
-      className={base}
-      style={{ scrollSnapAlign: "start" }}
-    >
-      {anim ? (
-        <motion.div
-          className="h-full w-full"
-          initial={anim.initial}
-          whileInView={anim.whileInView}
-          viewport={{ once: false, amount: 0.15 }}
-          transition={anim.transition}
-        >
-          {children}
-        </motion.div>
-      ) : (
-        children
-      )}
-    </div>
-  );
-}
-
-// ── Nav dots ────────────────────────────────────────────────────────────
+// ── Navigation dots ─────────────────────────────────────────────────────
 function NavDots({
   active,
   onDotClick,
@@ -136,21 +61,7 @@ function NavDots({
   );
 }
 
-// ── Top progress bar ────────────────────────────────────────────────────
-function ProgressBar({ active }: { active: number }) {
-  return (
-    <div className="fixed top-0 left-0 w-full h-[3px] z-50 bg-black/10 pointer-events-none">
-      <motion.div
-        className="h-full bg-white/80 origin-left"
-        style={{ transformOrigin: "left" }}
-        animate={{ scaleX: (active + 1) / SECTIONS.length }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      />
-    </div>
-  );
-}
-
-// ── Bottom-left section counter ─────────────────────────────────────────
+// ── Section indicator (bottom-left) ────────────────────────────────────
 function SectionIndicator({ active }: { active: number }) {
   return (
     <div
@@ -184,50 +95,137 @@ function SectionIndicator({ active }: { active: number }) {
   );
 }
 
-// ── Index ───────────────────────────────────────────────────────────────
+// ── Index ────────────────────────────────────────────────────────────────
 const Index = () => {
-  const [active, setActive] = useState(0);
+  const [activeSection, setActiveSection] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleVisible = useCallback((i: number) => setActive(i), []);
+  // Track scroll progress within the container div (not window)
+  const { scrollYProgress } = useScroll({ container: containerRef });
 
+  // Butter-smooth spring — runs entirely inside Framer Motion's pipeline.
+  // Zero React re-renders during scroll; DOM updates happen directly.
+  const smooth = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 25,
+    restDelta: 0.0005,
+  });
+
+  // Update React state only when the active section changes (max 4 times
+  // per full scroll session — negligible re-render cost)
+  useMotionValueEvent(smooth, "change", (v) => {
+    const next = Math.min(SECTIONS.length - 1, Math.floor(v * SECTIONS.length));
+    setActiveSection((prev) => (prev !== next ? next : prev));
+  });
+
+  // ── Scroll-driven entrances ─────────────────────────────────────────
+  // All these are MotionValues → no re-renders, GPU-composited transforms only.
+
+  // About: rises from below (0.18 → 0.28 of total scroll)
+  const aboutY       = useTransform(smooth, [0.18, 0.28], ["100vh", "0vh"]);
+  const aboutOpacity = useTransform(smooth, [0.18, 0.26], [0, 1]);
+
+  // Projects: slides in from right (0.38 → 0.48)
+  const projectsX       = useTransform(smooth, [0.38, 0.48], ["100vw", "0vw"]);
+  const projectsOpacity = useTransform(smooth, [0.38, 0.46], [0, 1]);
+
+  // Skills: scales up + unrotates (0.58 → 0.68)
+  const skillsScale   = useTransform(smooth, [0.58, 0.68], [0.85, 1]);
+  const skillsRotate  = useTransform(smooth, [0.58, 0.68], [-3, 0]);
+  const skillsOpacity = useTransform(smooth, [0.58, 0.66], [0, 1]);
+
+  // Contact: drops from top (0.78 → 0.88)
+  const contactY       = useTransform(smooth, [0.78, 0.88], ["-100vh", "0vh"]);
+  const contactOpacity = useTransform(smooth, [0.78, 0.86], [0, 1]);
+
+  // Scroll the container to the n-th section (each section = 200vh slot)
   const scrollToSection = useCallback((i: number) => {
-    const el = containerRef.current?.querySelector(`#${SECTIONS[i].id}`);
-    el?.scrollIntoView({ behavior: "smooth" });
+    const el = containerRef.current;
+    if (!el) return;
+    el.scrollTo({ top: i * 2 * window.innerHeight, behavior: "smooth" });
   }, []);
-
-  const components = [
-    <Hero />,
-    <AboutSection />,
-    <Projects />,
-    <Skills />,
-    <ContactSection />,
-  ];
 
   return (
     <>
-      <ProgressBar active={active} />
-      <NavDots active={active} onDotClick={scrollToSection} />
-      <SectionIndicator active={active} />
+      {/* Top progress bar — driven by MotionValue, zero re-renders */}
+      <div className="fixed top-0 left-0 w-full h-[3px] z-50 bg-black/10 pointer-events-none">
+        <motion.div
+          className="h-full bg-white/80"
+          style={{ scaleX: smooth, transformOrigin: "left" }}
+        />
+      </div>
 
+      <NavDots active={activeSection} onDotClick={scrollToSection} />
+      <SectionIndicator active={activeSection} />
+
+      {/* Scrollable container — owns all scrolling; body stays still */}
       <div
         ref={containerRef}
         className="scroll-snap-container h-screen overflow-y-scroll overflow-x-hidden"
-        style={{
-          scrollSnapType: "y mandatory",
-        } as React.CSSProperties}
       >
-        {components.map((component, i) => (
-          <Section
-            key={SECTIONS[i].id}
-            id={SECTIONS[i].id}
-            index={i}
-            anim={ANIMATIONS[i]}
-            onVisible={handleVisible}
-          >
-            {component}
-          </Section>
-        ))}
+        {/* Tall inner div — sticky panels attach here */}
+        <div style={{ height: `${SECTIONS.length * 200}vh`, position: "relative" }}>
+
+          {/* ── Hero ── (no entrance; always the first thing seen) */}
+          <div style={{ height: "200vh" }}>
+            <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
+              <Hero />
+            </div>
+          </div>
+
+          {/* ── About ── rises from below */}
+          <div style={{ height: "200vh" }}>
+            <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
+              <motion.div
+                className="section-panel h-full w-full"
+                style={{ y: aboutY, opacity: aboutOpacity }}
+              >
+                <AboutSection />
+              </motion.div>
+            </div>
+          </div>
+
+          {/* ── Projects ── slides in from right */}
+          <div style={{ height: "200vh" }}>
+            <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
+              <motion.div
+                className="section-panel h-full w-full"
+                style={{ x: projectsX, opacity: projectsOpacity }}
+              >
+                <Projects />
+              </motion.div>
+            </div>
+          </div>
+
+          {/* ── Skills ── scales up + unrotates */}
+          <div style={{ height: "200vh" }}>
+            <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
+              <motion.div
+                className="section-panel h-full w-full"
+                style={{
+                  scale: skillsScale,
+                  rotate: skillsRotate,
+                  opacity: skillsOpacity,
+                }}
+              >
+                <Skills />
+              </motion.div>
+            </div>
+          </div>
+
+          {/* ── Contact ── drops from top */}
+          <div style={{ height: "200vh" }}>
+            <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
+              <motion.div
+                className="section-panel h-full w-full"
+                style={{ y: contactY, opacity: contactOpacity }}
+              >
+                <ContactSection />
+              </motion.div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </>
   );

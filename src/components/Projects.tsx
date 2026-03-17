@@ -99,7 +99,8 @@ const Projects = () => {
         <motion.h1 
           className="text-4xl md:text-5xl font-bold text-white drop-shadow-[4px_4px_0px_rgba(0,0,0,0.7)] text-center mb-8"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6 }}
         >
          Hardik's <span className="text-[#FF9B9B]">Code</span> Flex
