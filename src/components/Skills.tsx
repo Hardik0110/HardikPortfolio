@@ -74,7 +74,7 @@ const Skills = () => {
     { name: "Three.js", color: "bg-green-500" },
     { name: "Node.js", color: "bg-green-600" },
     { name: "Express", color: "bg-gray-500" },
-    { name: "NodeJS", color: "bg-blue-800" },
+    { name: "Next.js", color: "bg-blue-800" },
     { name: "AI", color: "bg-orange-400" },
     { name: "Listening Music", color: "bg-purple-500" },
   ];

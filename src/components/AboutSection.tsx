@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { FaLinkedin, FaInstagram, FaGithub, FaTwitter } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import { IoMail, IoCall } from "react-icons/io5";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const AboutSection = () => {
+  const isMobile = useIsMobile();
   const iconPositions = [
     { x: 380, y: 50, delay: 0.2 },
     { x: 210, y: 20, delay: 0.3 },
@@ -30,8 +32,8 @@ const AboutSection = () => {
     { Icon: SiLeetcode, href: "https://leetcode.com/u/hardik0110/" },
     { Icon: FaGithub, href: "https://github.com/Hardik0110" },
     { Icon: FaTwitter, href: "#" },
-    { Icon: IoMail, href: "hardikkubavat0110@gmail.com" },
-    { Icon: IoCall, href: "+918140900320" },
+    { Icon: IoMail, href: "mailto:hardikkubavat0110@gmail.com" },
+    { Icon: IoCall, href: "tel:+918140900320" },
   ];
 
   const bounceAnimation = {
@@ -66,12 +68,12 @@ const AboutSection = () => {
               whileInView={{
                 opacity: 1,
                 scale: 1,
-                x: window.innerWidth < 768 ? mobileIconPositions[index].x : iconPositions[index].x,
-                y: window.innerWidth < 768 ? mobileIconPositions[index].y : iconPositions[index].y,
+                x: isMobile ? mobileIconPositions[index].x : iconPositions[index].x,
+                y: isMobile ? mobileIconPositions[index].y : iconPositions[index].y,
               }}
               viewport={{ once: true }}
               transition={{
-                delay: window.innerWidth < 768 ? mobileIconPositions[index].delay : iconPositions[index].delay,
+                delay: isMobile ? mobileIconPositions[index].delay : iconPositions[index].delay,
                 duration: 0.6,
                 type: "spring",
                 stiffness: 100,
