@@ -65,18 +65,28 @@ export function Globe({
   }
 
   useEffect(() => {
+    if (!canvasRef.current) return
+
     window.addEventListener("resize", onResize)
     onResize()
 
-    const globe = createGlobe(canvasRef.current!, {
-      ...config,
-      width: width * 2,
-      height: width * 2,
-      onRender,
-    })
+    let globe: ReturnType<typeof createGlobe> | undefined
+    try {
+      globe = createGlobe(canvasRef.current, {
+        ...config,
+        width: width * 2,
+        height: width * 2,
+        onRender,
+      })
+      setTimeout(() => {
+        if (canvasRef.current) canvasRef.current.style.opacity = "1"
+      })
+    } catch (e) {
+      // WebGL not supported or context creation failed — degrade gracefully
+      console.warn("Globe: WebGL initialisation failed", e)
+    }
 
-    setTimeout(() => (canvasRef.current!.style.opacity = "1"))
-    return () => globe.destroy()
+    return () => globe?.destroy()
   }, [])
 
   return (
