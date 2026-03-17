@@ -30,8 +30,8 @@ const AboutSection = () => {
     { Icon: SiLeetcode, href: "https://leetcode.com/u/hardik0110/" },
     { Icon: FaGithub, href: "https://github.com/Hardik0110" },
     { Icon: FaTwitter, href: "#" },
-    { Icon: IoMail, href: "hardikkubavat0110@gmail.com" },
-    { Icon: IoCall, href: "+918140900320" },
+    { Icon: IoMail, href: "mailto:hardikkubavat0110@gmail.com" },
+    { Icon: IoCall, href: "tel:+918140900320" },
   ];
 
   const bounceAnimation = {

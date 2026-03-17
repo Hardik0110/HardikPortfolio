@@ -63,22 +63,19 @@
   }
 }
 
-/* Hide scrollbar */
-html {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  scroll-behavior: smooth;
+/* Scroll-snap container — hide scrollbar cross-browser */
+.scroll-snap-container {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE / Edge */
+  overscroll-behavior: none;
+}
+.scroll-snap-container::-webkit-scrollbar {
+  display: none;                /* Chrome / Safari / Opera */
 }
 
-html::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-/* Enable smooth scroll */
 body {
   @apply bg-background text-foreground;
-  overflow-x: hidden;
-  overscroll-behavior: none;
+  overflow: hidden;             /* prevent body scroll; snap container owns it */
 }
 
 /* Enhance animation performance */
