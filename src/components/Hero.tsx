@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Globe } from "./ui/globe";
 import AnimatedDownloadButton from "./ui/downloadbutton";
 
 const Hero = () => {
@@ -48,34 +47,6 @@ const Hero = () => {
           </h2>
         </motion.div>
       </div>
-
-      {/* Globe component: half visible at the bottom */}
-      <div className="absolute bottom-0 w-full h-[300px] md:h-[300px] h-[200px] overflow-hidden z-10">
-        <Globe className="relative -top-[50px] md:-top-[50px] -top-[25px] opacity-80" />
-      </div>
-
-      {/* Scroll indicator */}
-      {['left-20'].map((position) => (
-        <motion.div
-          key={position}
-          className={`absolute bottom-8 ${position} -translate-x-1/2 z-20`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="flex flex-col items-center">
-            <p className="text-white mb-2">Scroll Down</p>
-            <motion.div
-              className="w-6 h-10 border-2 border-white rounded-full flex items-start justify-center p-1"
-              initial={{ y: 0 }}
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              <div className="w-1.5 h-3 bg-white rounded-full" />
-            </motion.div>
-          </div>
-        </motion.div>
-      ))}
 
       {/* Full circular download button at right bottom */}
       <div className="hidden md:block">

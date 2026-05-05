@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState } from "react";
 import {
   motion,
   useScroll,
@@ -19,47 +19,6 @@ const SECTIONS = [
   { id: "skills",   label: "Skills"  },
   { id: "contact",  label: "Contact" },
 ] as const;
-
-// ── Navigation dots ─────────────────────────────────────────────────────
-function NavDots({
-  active,
-  onDotClick,
-}: {
-  active: number;
-  onDotClick: (i: number) => void;
-}) {
-  return (
-    <nav className="fixed right-5 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col gap-5">
-      {SECTIONS.map((s, i) => (
-        <button
-          key={s.id}
-          onClick={() => onDotClick(i)}
-          aria-label={`Go to ${s.label}`}
-          className="group flex items-center gap-3 justify-end focus:outline-none"
-        >
-          <span
-            className="text-xs font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
-            style={{ textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}
-          >
-            {s.label}
-          </span>
-          <motion.div
-            className="rounded-full border-2 border-white"
-            animate={{
-              width:           active === i ? 14 : 10,
-              height:          active === i ? 14 : 10,
-              backgroundColor: active === i ? "#ffffff" : "transparent",
-              boxShadow:       active === i
-                ? "0 0 10px 3px rgba(255,255,255,0.45)"
-                : "none",
-            }}
-            transition={{ type: "spring", stiffness: 380, damping: 26 }}
-          />
-        </button>
-      ))}
-    </nav>
-  );
-}
 
 // ── Section indicator (bottom-left) ────────────────────────────────────
 function SectionIndicator({ active }: { active: number }) {
@@ -138,13 +97,6 @@ const Index = () => {
   const contactY       = useTransform(smooth, [0.78, 0.88], ["-100vh", "0vh"]);
   const contactOpacity = useTransform(smooth, [0.78, 0.86], [0, 1]);
 
-  // Scroll the container to the n-th section (each section = 200vh slot)
-  const scrollToSection = useCallback((i: number) => {
-    const el = containerRef.current;
-    if (!el) return;
-    el.scrollTo({ top: i * 2 * window.innerHeight, behavior: "smooth" });
-  }, []);
-
   return (
     <>
       {/* Top progress bar — driven by MotionValue, zero re-renders */}
@@ -155,7 +107,6 @@ const Index = () => {
         />
       </div>
 
-      <NavDots active={activeSection} onDotClick={scrollToSection} />
       <SectionIndicator active={activeSection} />
 
       {/* Scrollable container — owns all scrolling; body stays still */}
