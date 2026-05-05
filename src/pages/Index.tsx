@@ -20,40 +20,6 @@ const SECTIONS = [
   { id: "contact",  label: "Contact" },
 ] as const;
 
-// ── Section indicator (bottom-left) ────────────────────────────────────
-function SectionIndicator({ active }: { active: number }) {
-  return (
-    <div
-      className="fixed left-6 bottom-8 z-50 hidden md:flex flex-col items-start gap-0.5 pointer-events-none select-none"
-      style={{ textShadow: "1px 1px 8px rgba(0,0,0,0.5)" }}
-    >
-      <motion.p
-        key={`lbl-${active}`}
-        className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/60"
-        initial={{ opacity: 0, y: 4 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        {SECTIONS[active].label}
-      </motion.p>
-      <div className="flex items-baseline gap-1">
-        <motion.span
-          key={`num-${active}`}
-          className="text-3xl font-black text-white"
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: 0.05 }}
-        >
-          {String(active + 1).padStart(2, "0")}
-        </motion.span>
-        <span className="text-sm font-bold text-white/40">
-          /{String(SECTIONS.length).padStart(2, "0")}
-        </span>
-      </div>
-    </div>
-  );
-}
-
 // ── Index ────────────────────────────────────────────────────────────────
 const Index = () => {
   const [activeSection, setActiveSection] = useState(0);
@@ -106,8 +72,6 @@ const Index = () => {
           style={{ scaleX: smooth, transformOrigin: "left" }}
         />
       </div>
-
-      <SectionIndicator active={activeSection} />
 
       {/* Scrollable container — owns all scrolling; body stays still */}
       <div
