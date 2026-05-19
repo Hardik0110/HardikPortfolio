@@ -1,147 +1,38 @@
-import { useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  useMotionValueEvent,
-} from "framer-motion";
+import { useRef } from "react";
+import { useScroll, useTransform, useSpring } from "framer-motion";
 import Hero from "../components/Hero";
-import AboutSection from "../components/AboutSection";
-import Projects from "../components/Projects";
-import Skills from "../components/Skills";
-import { ContactSection } from "@/components/ContactSection";
+import Projects from "../components/sections/Projects";
+import Skills from "../components/sections/Skills";
+import Contact from "../components/sections/Contact";
 
-const SECTIONS = [
-  { id: "hero",     label: "Home"    },
-  { id: "about",    label: "About"   },
-  { id: "projects", label: "Work"    },
-  { id: "skills",   label: "Skills"  },
-  { id: "contact",  label: "Contact" },
-] as const;
-
-// ── Index ────────────────────────────────────────────────────────────────
 const Index = () => {
-  const [activeSection, setActiveSection] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const spacerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: spacerRef,
+    offset: ["start start", "end start"],
+  });
 
-  // Track scroll progress within the container div (not window)
-  const { scrollYProgress } = useScroll({ container: containerRef });
-
-  // Butter-smooth spring — runs entirely inside Framer Motion's pipeline.
-  // Zero React re-renders during scroll; DOM updates happen directly.
   const smooth = useSpring(scrollYProgress, {
     stiffness: 80,
     damping: 25,
-    restDelta: 0.0005,
+    restDelta: 0.001,
   });
 
-  // Update React state only when the active section changes (max 4 times
-  // per full scroll session — negligible re-render cost)
-  useMotionValueEvent(smooth, "change", (v) => {
-    const next = Math.min(SECTIONS.length - 1, Math.floor(v * SECTIONS.length));
-    setActiveSection((prev) => (prev !== next ? next : prev));
-  });
-
-  // ── Scroll-driven entrances ─────────────────────────────────────────
-  // All these are MotionValues → no re-renders, GPU-composited transforms only.
-
-  // About: rises from below (0.18 → 0.28 of total scroll)
-  const aboutY       = useTransform(smooth, [0.18, 0.28], ["100vh", "0vh"]);
-  const aboutOpacity = useTransform(smooth, [0.18, 0.26], [0, 1]);
-
-  // Projects: slides in from right (0.38 → 0.48)
-  const projectsX       = useTransform(smooth, [0.38, 0.48], ["100vw", "0vw"]);
-  const projectsOpacity = useTransform(smooth, [0.38, 0.46], [0, 1]);
-
-  // Skills: scales up + unrotates (0.58 → 0.68)
-  const skillsScale   = useTransform(smooth, [0.58, 0.68], [0.85, 1]);
-  const skillsRotate  = useTransform(smooth, [0.58, 0.68], [-3, 0]);
-  const skillsOpacity = useTransform(smooth, [0.58, 0.66], [0, 1]);
-
-  // Contact: drops from top (0.78 → 0.88)
-  const contactY       = useTransform(smooth, [0.78, 0.88], ["-100vh", "0vh"]);
-  const contactOpacity = useTransform(smooth, [0.78, 0.86], [0, 1]);
+  const redY = useTransform(smooth, [0, 1], ["0%", "-105%"]);
+  const blackY = useTransform(smooth, [0, 1], ["0%", "105%"]);
+  const gridOpacity = useTransform(smooth, [0, 0.4], [1, 0]);
 
   return (
     <>
-      {/* Top progress bar — driven by MotionValue, zero re-renders */}
-      <div className="fixed top-0 left-0 w-full h-[3px] z-50 bg-black/10 pointer-events-none">
-        <motion.div
-          className="h-full bg-white/80"
-          style={{ scaleX: smooth, transformOrigin: "left" }}
-        />
+      <div className="fixed inset-0 z-10 pointer-events-none">
+        <Hero redY={redY} blackY={blackY} gridOpacity={gridOpacity} />
       </div>
 
-      {/* Scrollable container — owns all scrolling; body stays still */}
-      <div
-        ref={containerRef}
-        className="scroll-snap-container h-screen overflow-y-scroll overflow-x-hidden"
-      >
-        {/* Tall inner div — sticky panels attach here */}
-        <div style={{ height: `${SECTIONS.length * 200}vh`, position: "relative" }}>
+      <div ref={spacerRef} className="h-screen w-full bg-[#F4E9D8]" />
 
-          {/* ── Hero ── (no entrance; always the first thing seen) */}
-          <div style={{ height: "200vh" }}>
-            <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
-              <Hero />
-            </div>
-          </div>
-
-          {/* ── About ── rises from below */}
-          <div style={{ height: "200vh" }}>
-            <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
-              <motion.div
-                className="section-panel h-full w-full"
-                style={{ y: aboutY, opacity: aboutOpacity }}
-              >
-                <AboutSection />
-              </motion.div>
-            </div>
-          </div>
-
-          {/* ── Projects ── slides in from right */}
-          <div style={{ height: "200vh" }}>
-            <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
-              <motion.div
-                className="section-panel h-full w-full"
-                style={{ x: projectsX, opacity: projectsOpacity }}
-              >
-                <Projects />
-              </motion.div>
-            </div>
-          </div>
-
-          {/* ── Skills ── scales up + unrotates */}
-          <div style={{ height: "200vh" }}>
-            <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
-              <motion.div
-                className="section-panel h-full w-full"
-                style={{
-                  scale: skillsScale,
-                  rotate: skillsRotate,
-                  opacity: skillsOpacity,
-                }}
-              >
-                <Skills />
-              </motion.div>
-            </div>
-          </div>
-
-          {/* ── Contact ── drops from top */}
-          <div style={{ height: "200vh" }}>
-            <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
-              <motion.div
-                className="section-panel h-full w-full"
-                style={{ y: contactY, opacity: contactOpacity }}
-              >
-                <ContactSection />
-              </motion.div>
-            </div>
-          </div>
-
-        </div>
-      </div>
+      <Projects />
+      <Skills />
+      <Contact />
     </>
   );
 };
